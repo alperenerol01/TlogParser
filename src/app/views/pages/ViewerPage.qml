@@ -61,7 +61,8 @@ Item {
             Layout.fillHeight: true
             currentIndex: tabBar.currentIndex
 
-            Item {
+            MapTab {
+                session: root.session
             }
             RawDataTab {
                 model: root.session.packetModel
