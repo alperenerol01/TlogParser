@@ -69,5 +69,11 @@ Item {
                 onPacketClicked: (index) => root.session.playback.selectPacket(index)
             }
         }
+
+        TimelineBar {
+            Layout.fillWidth: true
+            Layout.margins: 8
+            playback: root.session.playback
+        }
     }
 }

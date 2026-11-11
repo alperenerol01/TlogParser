@@ -29,6 +29,7 @@ qt_add_qml_module(TlogParser
         views/pages/ViewerPage.qml
         views/pages/RawDataTab.qml
         views/components/PacketRow.qml
+        views/components/TimelineBar.qml
 )
 
 target_link_libraries(TlogParser PRIVATE TlogCore Qt6::Quick Qt6::Positioning Qt6::Concurrent)
