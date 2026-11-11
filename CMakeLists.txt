@@ -14,3 +14,4 @@ if(NOT EXISTS "${MAVLINK_INCLUDE_DIR}/mavlink.h")
 endif()
 
 add_subdirectory(src/core)
+add_subdirectory(src/app)
