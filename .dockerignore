@@ -1,0 +1,5 @@
+build/
+.git/
+.qtcreator/
+.vscode/
+docs/
