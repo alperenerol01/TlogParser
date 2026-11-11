@@ -12,3 +12,5 @@ if(NOT EXISTS "${MAVLINK_INCLUDE_DIR}/mavlink.h")
         "MAVLink headers not found in ${MAVLINK_INCLUDE_DIR}.\n"
         "Run: git submodule update --init")
 endif()
+
+add_subdirectory(src/core)
