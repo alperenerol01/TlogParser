@@ -14,7 +14,7 @@ Item {
         if (routeShown || root.session.flightPath.length === 0) {
             return
         }
-        mapView.map.fitViewportToMapItems([routeLine])
+        map.fitViewportToMapItems([routeLine])
         routeShown = true
     }
 
@@ -41,34 +41,63 @@ Item {
         }
     }
 
-    MapView {
-        id: mapView
+    Map {
+        id: map
         anchors.fill: parent
-        map.plugin: mapPlugin
-        map.activeMapType: map.supportedMapTypes[map.supportedMapTypes.length - 1]
-    }
+        plugin: mapPlugin
+        activeMapType: supportedMapTypes[supportedMapTypes.length - 1]
+        property geoCoordinate startCentroid
 
-    MapPolyline {
-        id: routeLine
-        path: root.session.flightPath
-        line.width: 3
-        line.color: "red"
-    }
+        PinchHandler {
+            id: pinch
+            target: null
+            onActiveChanged: if (active) {
+                map.startCentroid = map.toCoordinate(pinch.centroid.position, false)
+            }
+            onScaleChanged: (delta) => {
+                map.zoomLevel += Math.log2(delta)
+                map.alignCoordinateToPoint(map.startCentroid, pinch.centroid.position)
+            }
+            onRotationChanged: (delta) => {
+                map.bearing -= delta
+                map.alignCoordinateToPoint(map.startCentroid, pinch.centroid.position)
+            }
+            grabPermissions: PointerHandler.TakeOverForbidden
+        }
+        WheelHandler {
+            id: wheel
+            acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
+            rotationScale: 1/120
+            property: "zoomLevel"
+        }
+        DragHandler {
+            id: drag
+            target: null
+            onTranslationChanged: (delta) => map.pan(-delta.x, -delta.y)
+        }
 
-    MapQuickItem {
-        id: marker
-        coordinate: root.session.playback.currentCoordinate
-        visible: coordinate.isValid
-        anchorPoint.x: dot.width / 2
-        anchorPoint.y: dot.height / 2
-        sourceItem: Rectangle {
-            id: dot
-            width: 16
-            height: 16
-            radius: 8
-            color: "blue"
-            border.width: 2
-            border.color: "white"
+        MapPolyline {
+            id: routeLine
+            path: root.session.flightPath
+            line.width: 3
+            line.color: "red"
+        }
+
+        MapQuickItem {
+            id: marker
+            coordinate: root.session.playback.currentCoordinate
+            visible: coordinate.isValid
+            anchorPoint.x: dot.width / 2
+            anchorPoint.y: dot.height / 2
+            sourceItem: Rectangle {
+                id: dot
+                width: 16
+                height: 16
+                radius: 8
+                color: "blue"
+                border.width: 2
+                border.color: "white"
+            }
         }
     }
 
@@ -98,10 +127,5 @@ Item {
                 text: "Alt: " + marker.coordinate.altitude.toFixed(2) + " m"
             }
         }
-    }
-
-    Component.onCompleted: {
-        mapView.map.addMapItem(routeLine)
-        mapView.map.addMapItem(marker)
     }
 }
