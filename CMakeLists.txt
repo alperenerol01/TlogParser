@@ -15,3 +15,8 @@ endif()
 
 add_subdirectory(src/core)
 add_subdirectory(src/app)
+
+include(CTest)
+if(BUILD_TESTING)
+    add_subdirectory(tests)
+endif()
