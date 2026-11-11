@@ -2,6 +2,8 @@ add_library(TlogCore STATIC
     MavlinkPacket.h
     MavlinkFrameParser.h
     MavlinkFrameParser.cpp
+    TlogReader.h
+    TlogReader.cpp
 )
 
 target_include_directories(TlogCore PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
