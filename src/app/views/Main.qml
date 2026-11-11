@@ -19,4 +19,10 @@ ApplicationWindow {
         loading: logSession.loading
         onFileSelected: (fileUrl) => logSession.load(fileUrl)
     }
+
+    ViewerPage {
+        anchors.fill: parent
+        visible: logSession.loaded
+        session: logSession
+    }
 }

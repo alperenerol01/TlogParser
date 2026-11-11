@@ -26,6 +26,9 @@ qt_add_qml_module(TlogParser
     QML_FILES
         views/Main.qml
         views/pages/LoadPage.qml
+        views/pages/ViewerPage.qml
+        views/pages/RawDataTab.qml
+        views/components/PacketRow.qml
 )
 
 target_link_libraries(TlogParser PRIVATE TlogCore Qt6::Quick Qt6::Positioning Qt6::Concurrent)
