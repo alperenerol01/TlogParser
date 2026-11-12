@@ -2,6 +2,8 @@
 
 #include <mavlink.h>
 
+#include <cstring>
+
 namespace tlog {
 
 namespace {
@@ -42,17 +44,14 @@ FrameStatus toFrameStatus(std::uint8_t framingResult)
  */
 MavlinkPacket toPacket(const mavlink_message_t& message)
 {
-    const auto* payload = reinterpret_cast<const std::uint8_t*>(message.payload64);
-
     MavlinkPacket packet;
     packet.messageId = message.msgid;
     packet.systemId = message.sysid;
     packet.componentId = message.compid;
     packet.sequence = message.seq;
     packet.protocolVersion = (message.magic == MAVLINK_STX) ? 2 : 1;
-    for (std::size_t i = 0; i < message.len; ++i) {
-        packet.payload.push_back(payload[i]);
-    }
+    packet.payload.resize(message.len);
+    std::memcpy(packet.payload.data(), message.payload64, message.len);
     return packet;
 }
 
