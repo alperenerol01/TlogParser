@@ -11,8 +11,10 @@ RowLayout {
 
     spacing: 8
 
-    Button {
+    PlayerButton {
+        Layout.preferredWidth: 104
         text: root.playback.playing ? "Duraklat" : "Oynat"
+        checked: root.playback.playing
         enabled: root.playback.durationMs > 0
         onClicked: {
             if (root.playback.playing) {
@@ -23,7 +25,7 @@ RowLayout {
         }
     }
 
-    Button {
+    PlayerButton {
         text: "2x"
         checkable: true
         checked: root.playback.doubleSpeed
