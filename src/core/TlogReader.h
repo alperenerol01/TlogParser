@@ -21,7 +21,7 @@ enum class TlogReadError {
 };
 
 /**
- * @brief Result of TlogReader::readFile() and TlogReader::readBytes().
+ * @brief Result of TlogReader::readFile() and TlogReader::parseBytes().
  */
 struct TlogReadResult {
     TlogReadError error = TlogReadError::None;   ///< TlogReadError::None on success.
@@ -46,11 +46,11 @@ public:
     TlogReadResult readFile(const std::filesystem::path& filePath) const;
 
     /**
-     * @brief Reads all packets from the contents of a .tlog file.
+     * @brief Parses all packets from the contents of a .tlog file.
      * @param bytes The complete file contents.
      * @return The packets found and the error state.
      */
-    TlogReadResult readBytes(const std::vector<std::uint8_t>& bytes) const;
+    TlogReadResult parseBytes(const std::vector<std::uint8_t>& bytes) const;
 
 private:
     MavlinkFrameParser m_frameParser;

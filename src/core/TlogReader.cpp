@@ -52,10 +52,10 @@ TlogReadResult TlogReader::readFile(const std::filesystem::path& filePath) const
         result.error = TlogReadError::CannotOpenFile;
         return result;
     }
-    return readBytes(bytes);
+    return parseBytes(bytes);
 }
 
-TlogReadResult TlogReader::readBytes(const std::vector<std::uint8_t>& bytes) const
+TlogReadResult TlogReader::parseBytes(const std::vector<std::uint8_t>& bytes) const
 {
     TlogReadResult result;
     if (bytes.empty()) {

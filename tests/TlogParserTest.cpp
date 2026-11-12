@@ -130,7 +130,7 @@ private slots:
         bytes.resize(bytes.size() - 10);
         bytes.insert(bytes.begin(), {0x11, 0x22, 0xFD, 0x33, 0x44});
 
-        const tlog::TlogReadResult result = tlog::TlogReader().readBytes(bytes);
+        const tlog::TlogReadResult result = tlog::TlogReader().parseBytes(bytes);
 
         QCOMPARE(result.error, tlog::TlogReadError::None);
         QCOMPARE(result.packets.size(), std::size_t{86371 - 2});
