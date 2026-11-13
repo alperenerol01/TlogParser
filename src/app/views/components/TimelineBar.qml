@@ -12,6 +12,7 @@ RowLayout {
     spacing: 8
 
     PlayerButton {
+        id:playButton
         Layout.preferredWidth: 104
         text: root.playback.playing ? "Duraklat" : "Oynat"
         checked: root.playback.playing
@@ -25,11 +26,18 @@ RowLayout {
         }
     }
 
-    PlayerButton {
-        text: "2x"
-        checkable: true
-        checked: root.playback.doubleSpeed
-        onToggled: root.playback.doubleSpeed = checked
+    ComboBox {
+        width: 200
+        textRole: "text"
+        valueRole: "value"
+        model: [
+            {text: "1x", value: 1},
+            {text: "2x", value: 2},
+            {text: "4x", value: 4},
+            {text: "8x", value: 8}
+        ]
+        onActivated: root.playback.speed = currentValue
+
     }
 
     Label {

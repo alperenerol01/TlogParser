@@ -28,7 +28,7 @@ class PlaybackController : public QObject {
     Q_PROPERTY(int currentIndex READ currentIndex NOTIFY currentIndexChanged)
     Q_PROPERTY(QGeoCoordinate currentCoordinate READ currentCoordinate NOTIFY currentIndexChanged)
     Q_PROPERTY(bool playing READ isPlaying NOTIFY playingChanged)
-    Q_PROPERTY(bool doubleSpeed READ isDoubleSpeed WRITE setDoubleSpeed NOTIFY doubleSpeedChanged)
+    Q_PROPERTY(int speed READ speed WRITE setSpeed NOTIFY speedChanged)
 
 public:
     /**
@@ -97,18 +97,6 @@ public:
     bool isPlaying() const;
 
     /**
-     * @brief Tells whether playback runs at twice the normal speed.
-     * @return True if each step moves the timeline 100 ms instead of 50 ms.
-     */
-    bool isDoubleSpeed() const;
-
-    /**
-     * @brief Turns double speed on or off.
-     * @param doubleSpeed True for 100 ms steps, false for 50 ms steps.
-     */
-    void setDoubleSpeed(bool doubleSpeed);
-
-    /**
      * @brief Starts moving the timeline forward every 50 ms.
      *
      * If the timeline is already at its end, playback starts again from the beginning.
@@ -128,6 +116,9 @@ public:
      * @param index Row of the packet; values outside the timeline are ignored.
      */
     Q_INVOKABLE void selectPacket(int index);
+    void setSpeed(int newSpeed);
+
+    int speed() const;
 
 signals:
     /**
@@ -150,10 +141,7 @@ signals:
      */
     void playingChanged();
 
-    /**
-     * @brief Emitted when doubleSpeed changes.
-     */
-    void doubleSpeedChanged();
+    void speedChanged();
 
 private:
     /**
@@ -181,5 +169,5 @@ private:
     int m_currentIndex = -1;
     QTimer m_timer;
     bool m_playing = false;
-    bool m_doubleSpeed = false;
+    int m_speed = 1;
 };

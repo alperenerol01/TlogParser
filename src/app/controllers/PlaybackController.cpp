@@ -91,19 +91,7 @@ bool PlaybackController::isPlaying() const
     return m_playing;
 }
 
-bool PlaybackController::isDoubleSpeed() const
-{
-    return m_doubleSpeed;
-}
 
-void PlaybackController::setDoubleSpeed(bool doubleSpeed)
-{
-    if (doubleSpeed == m_doubleSpeed) {
-        return;
-    }
-    m_doubleSpeed = doubleSpeed;
-    emit doubleSpeedChanged();
-}
 
 void PlaybackController::play()
 {
@@ -149,6 +137,17 @@ void PlaybackController::selectPacket(int index)
     }
 }
 
+void PlaybackController::setSpeed(int newSpeed)
+{
+
+        if (newSpeed < 1 || newSpeed == m_speed) {
+            return;
+        }
+        m_speed = newSpeed;
+        emit speedChanged();
+
+}
+
 void PlaybackController::moveToStart()
 {
     if (m_positionMs != 0) {
@@ -169,10 +168,8 @@ void PlaybackController::moveToStart()
 void PlaybackController::advance()
 {
     qint64 stepMs = 50;
-    if (m_doubleSpeed) {
-        stepMs = 100;
-    }
-    setPositionMs(m_positionMs + stepMs);
+
+    setPositionMs(m_positionMs + stepMs * m_speed);
     if (m_positionMs >= m_durationMs) {
         pause();
     }
@@ -198,4 +195,11 @@ int PlaybackController::findPacketIndex(qint64 positionMs) const
         }
     }
     return static_cast<int>(low) - 1;
+}
+
+
+
+int PlaybackController::speed() const
+{
+    return m_speed;
 }
